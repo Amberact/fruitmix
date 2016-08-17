@@ -793,6 +793,8 @@ describe('repo', function() {
                   expect(nodeinfo.name).deep.to.equal("bcb")
                   expect(nodeinfo.type).to.equal("file")
                   expect(nodeinfo.owner).deep.to.equal([userUUID1])
+                  console.log("-=-=-=-=-=-=-=-=--==--=")
+                  console.log(repo.findNodeInDriveByUUID(folderUUID))
                   done()
                 })
               })
