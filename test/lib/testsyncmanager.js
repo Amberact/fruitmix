@@ -13,7 +13,6 @@ describe('syncmanager', function() {
   describe('create syncmanager', function() {
 
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create a new syncmanager', function(done) {
       
       rimraf('synctest', err => {
@@ -32,7 +31,6 @@ describe('syncmanager', function() {
   describe('canonicalJson', function() {
     let testnode={a:1,c:2,b:3}
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should return a canonicalJson', function(done) {
       
       rimraf('synctest', err => {
@@ -53,7 +51,6 @@ describe('syncmanager', function() {
   describe('hash', function() {
     let testnode={a:1,c:2,b:3}
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should return a hash value', function(done) {
       
       rimraf('synctest', err => {
@@ -70,29 +67,6 @@ describe('syncmanager', function() {
       }) 
     })
   })
-
-  // describe('createsyncfile  v1', function() {
-  //   let testnode={a:1,c:2,b:3,hash:'9abf0853a542d602f7b461fa34f52ee42862d22c43552b76d115c53d230a0271'}
-  //   let rootpath = path.join(process.cwd(), 'synctest') 
-  //   console.log(rootpath)
-  //   it('should create a sync file', function(done) {
-      
-  //     rimraf('synctest', err => {
-  //       if (err) return done(err)
-  //       mkdirp('synctest', err => {
-  //         if (err) return done(err) 
-  //         createSyncManager(rootpath, (syncm) => {
-  //           expect(syncm.rootpath).to.equal(rootpath)
-  //           syncm.createSyncFileAsync(testnode,"126576dasuidhb21",(re)=>{
-  //             expect(re).deep.to.equal(rootpath+"/9abf0853a542d602f7b461fa34f52ee42862d22c43552b76d115c53d230a0271")
-              
-  //             done()
-  //           })
-  //         })
-  //       })
-  //     }) 
-  //   })
-  // })
 
   describe('rebuildnode', function() {
     let testnode={ uuid: '8c594bb5-19b3-45c4-bb30-c894e176b3bf',
@@ -115,7 +89,6 @@ describe('syncmanager', function() {
       ]
   }
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should return a new node', function(done) {
       
       rimraf('synctest', err => {
@@ -148,7 +121,6 @@ describe('syncmanager', function() {
   describe('createsyncfile  v1', function() {
     let testnode={a:1,c:2,b:3,hash:'9abf0853a542d602f7b461fa34f52ee42862d22c43552b76d115c53d230a0271'}
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create a sync file', function(done) {
       
       rimraf('synctest', err => {
@@ -189,7 +161,6 @@ describe('syncmanager', function() {
     }
 
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create a sync file', function(done) {
       
       rimraf('synctest', err => {
@@ -232,7 +203,6 @@ describe('syncmanager', function() {
 
 
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create a sync file', function(done) {
       
       rimraf('synctest', err => {
@@ -276,7 +246,6 @@ describe('syncmanager', function() {
 
 
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create a sync file', function(done) {
       
       rimraf('synctest', err => {
@@ -385,7 +354,6 @@ describe('syncmanager', function() {
     testnode4.parent=testnode1
 
     let rootpath = path.join(process.cwd(), 'synctest') 
-    //console.log(rootpath)
     it('should create some sync files', function(done) {
       rimraf('synctest', err => {
         if (err) return done(err)
@@ -404,43 +372,6 @@ describe('syncmanager', function() {
       }) 
     })
   })
-
-  
-  // describe('repo scan', function() {
-
-  //   let rootpath = path.join(process.cwd(), 'tmptest')
-  //   it('should scan uuid folders in drive and library folder', function(done) {
-
-  //     let userUUID = UUID.v4()
-  //     let dpath = path.join(rootpath, 'drive', userUUID)
-  //     let preset = {
-  //       uuid: UUID.v4(),
-  //       owner: [userUUID],
-  //       writelist: [],
-  //       readlist: [],
-  //       hash: null,
-  //       htime: -1
-  //     }
-
-  //     rimraf('tmptest', err => {
-  //       if (err) return done(err)
-  //       mkdirp(dpath, err => {
-  //         if (err) return done(err)
-  //         xattr.set(dpath, 'user.fruitmix', JSON.stringify(preset), err => {
-  //           if (err) return done(err)
-  //           createRepo(rootpath, (err, repo) => {
-  //             if (err) return done(err)
-  //             repo.scan(() => {
-  //               expect(repo.rootpath).to.equal(rootpath)
-  //               expect(repo.drives.length).to.equal(1)
-  //               done()
-  //             })
-  //           })
-  //         })
-  //       })
-  //     })
-  //   }) 
-  // })
   
 })
 

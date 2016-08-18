@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp'
 import xattr from 'fs-xattr'
 import { expect } from 'chai'
 
-import { replacenode ,restoretree,tojsonobj,buildanewtree} from '../../src/lib/restoretree'
+import { replacechild ,restoretree,tojsonobj,buildanewtree} from '../../src/lib/restoretree'
 
 describe('restoretree', function() {
 
@@ -15,7 +15,7 @@ describe('restoretree', function() {
     it('newnode should replace oldnode', function(done) {
       let newnode=[{uuid:321,hash:222}]
       let tree={uuid:123,children:[]}
-      replacenode(tree,newnode)
+      replacechild(tree,newnode)
       expect(tree.uuid).to.equal(123)
       expect(tree.children.length).to.equal(1)
       expect(tree.children[0].uuid).to.equal(321)
@@ -31,7 +31,6 @@ describe('restoretree', function() {
       let testjson='{"children":[{"name":"bcb","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2765"},{"name":"abc","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2567"}],"hash":"","name":"05e4b6b4-687e-4743-9a51-56711104dd94","parent":null,"readlist":[],"type":"folder","uuid":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","writelist":[]}'
       let jsonobj = tojsonobj(testjson)
       let newtree=restoretree(jsonobj)
-      //console.log(newtree)
       expect(newtree.root.type).to.equal('folder')
       expect(newtree.root.hash).to.equal('')
       expect(newtree.root.uuid).to.equal('8c594bb5-19b3-45c4-bb30-c894e176b3bf')
@@ -89,8 +88,6 @@ describe('restoretree', function() {
 
     it('should build a newtree from files', function(done) {
       let tree = buildanewtree('1234')
-      console.log('--------')
-      console.log(tree.children[0].children[0])
       expect(tree.type).to.equal('folder')
       expect(tree.name).to.equal('05e4b6b4-687e-4743-9a51-56711104dd94')
       expect(tree.uuid).to.equal('8c594bb5-19b3-45c4-bb30-c894e176b777')
@@ -150,32 +147,4 @@ describe('restoretree', function() {
     })
   })
 
-  // describe('check', function() {
-
-  //   it('should ', function(done) {
-      
-  //     let testjson='{"children":[{"name":"bcb","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2765"},{"name":"abc","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2567"}],"hash":"","name":"05e4b6b4-687e-4743-9a51-56711104dd94","parent":null,"readlist":[],"type":"folder","uuid":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","writelist":[]}'
-  //     let jsonobj = tojsonobj(testjson)
-  //     expect(jsonobj.type).to.equal('folder')
-  //     expect(jsonobj.hash).to.equal('')
-  //     expect(jsonobj.uuid).to.equal('8c594bb5-19b3-45c4-bb30-c894e176b3bf')
-  //     expect(jsonobj.name).to.equal('05e4b6b4-687e-4743-9a51-56711104dd94')
-  //     expect(jsonobj.parent).to.equal(null)
-  //     expect(jsonobj.readlist).deep.to.equal([])
-  //     expect(jsonobj.writelist).deep.to.equal([])
-  //     expect(jsonobj.children.length).to.equal(2)
-  //     expect(jsonobj.children[0].name).to.equal('bcb')
-  //     expect(jsonobj.children[0].parent).to.equal('8c594bb5-19b3-45c4-bb30-c894e176b3bf')
-  //     expect(jsonobj.children[0].size).to.equal(2)
-  //     expect(jsonobj.children[0].type).to.equal('file')
-  //     expect(jsonobj.children[0].uuid).to.equal('fa3f6a95-c1c9-4412-82a1-a80948bd2765')
-  //     expect(jsonobj.children[1].name).to.equal('abc')
-  //     expect(jsonobj.children[1].parent).to.equal('8c594bb5-19b3-45c4-bb30-c894e176b3bf')
-  //     expect(jsonobj.children[1].size).to.equal(2)
-  //     expect(jsonobj.children[1].type).to.equal('file')
-  //     expect(jsonobj.children[1].uuid).to.equal('fa3f6a95-c1c9-4412-82a1-a80948bd2567')
-
-  //     done()
-  //   })
-  // })
 })

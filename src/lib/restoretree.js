@@ -140,59 +140,18 @@ function restoretree(jsonobj){
 }
 
 function replacenode(oldrootnode,childlist){
-  // let newchildren=[]
-  // oldrootnode.children.map(r=>{
-  //   if(r.uuid===newnode.uuid){
-  //     newchildren.push(newnode)
-  //   }
-  //   else{
-  //     newchildren.push(r)
-  //   }
-  // })
-  // oldrootnode.children.reduce(function(p,c,i){
-  //   // if(c.uuid!==newnode.uuid){
-  //   //   return 
-  //   (c.uuid!==newnode.uuid)?p.push(c):p.push(newnode)
-  //   return p
-  //   }
-  // },[])
-  // oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
-  //oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
-  // console.log(oldrootnode)
-  // console.log(childlist)
+  oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
+  oldrootnode.children.map(child=>child.parent=oldrootnode)
+}
+
+function replacechild(oldrootnode,childlist){
   childlist.reduce((p,c)=>forceFalse((oldrootnode.children.push(c)))||p,[])
   oldrootnode.children.map(child=>child.parent=oldrootnode)
 }
 
 function addchild(node){
-  // let newchildren=[]
-  // oldrootnode.children.map(r=>{
-  //   if(r.uuid===newnode.uuid){
-  //     newchildren.push(newnode)
-  //   }
-  //   else{
-  //     newchildren.push(r)
-  //   }
-  // })
-  // oldrootnode.children.reduce(function(p,c,i){
-  //   // if(c.uuid!==newnode.uuid){
-  //   //   return 
-  //   (c.uuid!==newnode.uuid)?p.push(c):p.push(newnode)
-  //   return p
-  //   }
-  // },[])
-  // oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
-  //oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
-  // console.log(oldrootnode)
-  // console.log(childlist)
-  if(node.type==='folder')replacenode(node,getnodefromfile(node.hash))
-  if(node.children)node.children.forEach(child=>{
-    if(child.type==='folder'){
-      addchild(child)
-    }
-  })
-  
-  //childlist.reduce((p,c)=>forceFalse((oldrootnode.children.push(c)))||p,[])
+  if(node.type==='folder')replacechild(node,getnodefromfile(node.hash))
+  if(node.children)node.children.forEach(child=>{if(child.type==='folder')addchild(child)})
 }
 
 function getnodefromfile(hash){
@@ -226,9 +185,5 @@ function getrootobj(hash){
     }
   return testnode1
 }
-// let testjson='{"children":[{"name":"bcb","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2765"},{"name":"bcb","parent":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","size":2,"type":"file","uuid":"fa3f6a95-c1c9-4412-82a1-a80948bd2765"}],"hash":"","name":"05e4b6b4-687e-4743-9a51-56711104dd94","parent":null,"readlist":[],"type":"folder","uuid":"8c594bb5-19b3-45c4-bb30-c894e176b3bf","writelist":[]}'
 
-
-// restoretree(testjson)
-
-export {replacenode,restoretree,tojsonobj,buildanewtree}
+export {replacechild,restoretree,tojsonobj,buildanewtree}
