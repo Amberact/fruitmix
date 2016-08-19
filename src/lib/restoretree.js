@@ -163,7 +163,8 @@ function buildanewtree(uuid){
   let newtree = createProtoMapTree()
   let treeroot = gettreeroot(uuid)
   addchild(treeroot)
-  return treeroot
+  newtree.root=treeroot
+  return newtree
 }
 
 function gettreeroot(uuid){
@@ -186,4 +187,4 @@ function getrootobj(hash){
   return testnode1
 }
 
-export {replacechild,restoretree,tojsonobj,buildanewtree}
+export {replacechild,restoretree,tojsonobj,buildanewtree,replacenode}
