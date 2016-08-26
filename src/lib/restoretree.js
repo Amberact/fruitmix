@@ -96,18 +96,17 @@ class ProtoMaptree{
   createNode(jsonobj){
     let node = Object.create(this.proto)
     node.name = jsonobj.name
-    node.size = jsonobj.size
+    node.size = jsonobj.size||2
     node.type = jsonobj.type
     node.uuid = jsonobj.uuid
     node.hash = jsonobj.hash
     node.readlist = jsonobj.readlist
     node.writelist = jsonobj.writelist
-    node.parent = null
-    node.children = []
+    node.parent = jsonobj.parent
+    node.children = jsonobj.children
+    node.mtime = jsonobj.mtime||0
     return node
   }
-
-
 
 }
 
@@ -128,30 +127,44 @@ function restoretree(jsonobj){
   let newtree = createProtoMapTree()
   let rootnode =newtree.createNode(jsonobj)
   newtree.root=rootnode
-  if(jsonobj.children){
-    jsonobj.children.map(r=>{
-      let newnode = newtree.createNode(r)
-      newnode.parent=rootnode
-      if(r.children)newnode.children=r.children
-      rootnode.children.push(newnode)
-    })
-  }
+  // if(jsonobj.children){
+  //   jsonobj.children.map(r=>{
+  //     let newnode = newtree.createNode(r)
+  //     newnode.parent=rootnode
+  //     if(r.children)newnode.children=r.children
+  //     rootnode.children.push(newnode)
+  //   })
+  // }
+  addchild2(newtree,rootnode)
   return newtree
 }
 
-function replacenode(oldrootnode,childlist){
-  oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(c):p.push(newnode))||p,[])
+function replacenode(tree,oldrootnode,childlist){
+  oldrootnode.children=oldrootnode.children.reduce((p,c)=>forceFalse((c.uuid!==newnode.uuid)?p.push(tree.createNode(c)):p.push(newnode))||p,[])
   oldrootnode.children.map(child=>child.parent=oldrootnode)
 }
 
-function replacechild(oldrootnode,childlist){
+function replacechild(tree,oldrootnode,childlist){
   childlist.reduce((p,c)=>forceFalse((oldrootnode.children.push(c)))||p,[])
   oldrootnode.children.map(child=>child.parent=oldrootnode)
 }
 
-function addchild(node){
-  if(node.type==='folder')replacechild(node,getnodefromfile(node.hash))
-  if(node.children)node.children.forEach(child=>{if(child.type==='folder')addchild(child)})
+function addchild(tree,node){
+  if(node.type==='folder')replacechild(tree,node,getnodefromfile(node.hash))
+  if(node.children)node.children.forEach(child=>{if(child.type==='folder')addchild(tree,child)})
+}
+
+function addchild2(tree,rootnode){
+  if(rootnode.children){
+    let newlist=[]
+    rootnode.children.map(r=>{
+      let newnode = tree.createNode(r)
+      newnode.parent=rootnode
+      newlist.push(newnode)
+      if(r.children)addchild2(tree,r)
+    })
+    rootnode.children=newlist
+  }
 }
 
 function getnodefromfile(hash){
@@ -162,7 +175,7 @@ function getnodefromfile(hash){
 function buildanewtree(uuid){
   let newtree = createProtoMapTree()
   let treeroot = gettreeroot(uuid)
-  addchild(treeroot)
+  addchild(newtree,treeroot)
   newtree.root=treeroot
   return newtree
 }
