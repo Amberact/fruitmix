@@ -127,14 +127,6 @@ function restoretree(jsonobj){
   let newtree = createProtoMapTree()
   let rootnode =newtree.createNode(jsonobj)
   newtree.root=rootnode
-  // if(jsonobj.children){
-  //   jsonobj.children.map(r=>{
-  //     let newnode = newtree.createNode(r)
-  //     newnode.parent=rootnode
-  //     if(r.children)newnode.children=r.children
-  //     rootnode.children.push(newnode)
-  //   })
-  // }
   addchild2(newtree,rootnode)
   return newtree
 }
@@ -156,14 +148,12 @@ function addchild(tree,node){
 
 function addchild2(tree,rootnode){
   if(rootnode.children){
-    let newlist=[]
-    rootnode.children.map(r=>{
+    rootnode.children=rootnode.children.map(r=>{
       let newnode = tree.createNode(r)
       newnode.parent=rootnode
-      newlist.push(newnode)
-      if(r.children)addchild2(tree,r)
+      if(r.children)addchild2(tree,newnode)
+      return newnode
     })
-    rootnode.children=newlist
   }
 }
 

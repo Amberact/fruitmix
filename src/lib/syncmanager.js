@@ -73,12 +73,7 @@ class syncManager {
 	    if(node.children)node.children.forEach(child => this.postSyncVisit(child))
 	    if(node.type==="folder"){
 	    	node.hash=""
-	    	// console.log(node.name)
-	    	// console.log(node.children)
 	    	let newnode=this.serializeNode(node)
-	    	//console.log("-------")
-	    	//console.log(newnode)
-	    	//console.log("-------")
 	    	node.hash=this.createSyncFile(newnode.children,this.canonicalJson(newnode.children))
 	    }
 	}
@@ -131,7 +126,6 @@ class syncManager {
 	}
 
 	serializeNode(node){
-		//console.log(node.name)
 		let newnode=extend({},node)
 		if(newnode.parent!==null)newnode.parent=newnode.parent.uuid
 		newnode.children=newnode.children.map(child=>{
